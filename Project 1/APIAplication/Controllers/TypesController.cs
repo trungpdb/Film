@@ -10,7 +10,7 @@ namespace APIAplication.Controllers
     //[EnableCors (origins: "http://localhost:4200", headers:"*", methods:"*")]
     public class TypesController : ApiController
     {
-
+    
         /// <summary>
         /// Trả về danh sách thể loại
         /// </summary>
@@ -19,6 +19,16 @@ namespace APIAplication.Controllers
         {
             ServiceType sv = new ServiceType();
             return sv.GetListAll();
+        }
+
+        /// <summary>
+        /// Trả về danh sách thể loại
+        /// </summary>
+        // GET: api/Types/GetFilmByTypes/id
+        public List<FilmModel> GetFilmByTypes(int id)
+        {
+            ServiceType sv = new ServiceType();
+            return sv.GetFilmByTypes(id);
         }
 
         ///<summary>
@@ -57,10 +67,10 @@ namespace APIAplication.Controllers
         ///</summary>
         //PUT: api/Types/UpdateType
         [HttpPut]
-        public void UpdateType(int id, TypeFilmModel typeFilm)
+        public void UpdateType(TypeFilmModel typeFilm)
         {
             ServiceType sv = new ServiceType();
-            var edit = sv.EditType(id, typeFilm);
+            var edit = sv.EditType(typeFilm);
         }
 
 

@@ -9,7 +9,7 @@ namespace DataObject.EF
     /// </summary>
     [Table("Type")]
     public class TypeFilm
-    {
+    {      
         [Key]
         public int TypeID { get; set; }
 

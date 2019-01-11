@@ -9,7 +9,7 @@ using DataObject.Models;
 
 namespace DataAccess.Types
 {
-    
+
     /// <summary>
     /// kế thừa interface Type
     /// </summary>
@@ -55,7 +55,7 @@ namespace DataAccess.Types
             {
                 db.TypeFilms.Remove(select);
                 return db.SaveChanges();
-                
+
             }
             return 0;
         }
@@ -63,7 +63,7 @@ namespace DataAccess.Types
         ///<summary>
         /// Sửa
         ///</summary>
-        public int EditType(int id, TypeFilmModel typeFilm)
+        public int EditType(TypeFilmModel typeFilm)
         {
             var select = db.TypeFilms.Where(f => f.TypeID == typeFilm.TypeID).FirstOrDefault();
 
@@ -71,10 +71,9 @@ namespace DataAccess.Types
             if (select != null)
             {
                 // update
-                select.TypeID = typeFilm.TypeID;
                 select.NameType = typeFilm.NameType;
 
-                // return database
+                // return db
                 return db.SaveChanges();
             }
             else
@@ -115,14 +114,79 @@ namespace DataAccess.Types
         ///</summary>
         public List<TypeFilmModel> GetListAll()
         {
+            // Danh sách thể loại
             var type = db.TypeFilms.Select(a => new TypeFilmModel
             {
                 TypeID = a.TypeID,
-                NameType = a.NameType
+                NameType = a.NameType,
+
             }).ToList();
             // transfer
-            List<TypeFilmModel> list = type;
-            return list;
+            // List<TypeFilmModel> list = type;
+            return type;
+        }
+
+        ///<summary>
+        /// Trả về danh sách phim theo thể loại
+        ///</summary>
+        public List<FilmModel> GetFilmByTypes(int id)
+        {
+            var lstFilm = (from film in db.Films
+                           join sub in db.SubTypes
+                           on film.FilmID equals sub.FilmID
+                           where sub.TypeID == id
+                           select new FilmModel
+                           {
+                               FilmID = film.FilmID,
+                               FilmName = film.FilmName,
+                               Status = film.Status,
+                               Year = film.Year,
+                               Describe = film.Describe,
+                               Rate = film.Rate,
+                               Img = film.Img,
+                               // thể loại phim
+                               TypeFilms = (from type in db.TypeFilms
+                                            join sub in db.SubTypes
+                                            on type.TypeID equals sub.TypeID
+                                            where sub.FilmID == film.FilmID
+                                            select new TypeFilmModel
+                                            {
+                                                TypeID = type.TypeID,
+                                                NameType = type.NameType
+                                            }).ToList(),
+                               // diễn viên tham gia
+                               Actors = (from actor in db.Actors
+                                         join sub in db.SubActors
+                                         on actor.ActorID equals sub.ActorID
+                                         where sub.FilmID == film.FilmID
+                                         select new ActorModel
+                                         {
+                                             ActorID = actor.ActorID,
+                                             ActorName = actor.ActorName,
+                                             Birthday = actor.Birthday,
+                                             Describe = actor.Describe,
+                                             Gender = actor.Gender,
+                                             Img = actor.Img,
+                                             Status = actor.Status
+                                         }).ToList(),
+                               // đạo diễn
+                               Directors = (from director in db.Directors
+                                            join sub in db.SubDirectors
+                                            on director.DirectorID equals sub.DirectorID
+                                            where sub.FilmID == film.FilmID
+                                            select new DirectorModel
+                                            {
+                                                DirectorBirthday = director.DirectorBirthday,
+                                                DirectorDescribe = director.DirectorDescribe,
+                                                DirectorGender = director.DirectorGender,
+                                                DirectorID = director.DirectorID,
+                                                DirectorImg = director.DirectorImg,
+                                                DirectorName = director.DirectorName,
+                                                DirectorStatus = director.DirectorStatus
+                                            }).ToList(),
+                           }).ToList();
+
+            return lstFilm;
         }
     }
 }

@@ -1,0 +1,35 @@
+<div class="page-header header-filter" style="background-image: url('../assets/img/bg7.jpg'); background-size: cover; background-position: top center;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+        <div class="card card-login">
+          <form class="form" method="" action="">
+            <h3 class="description text-center" style="color:red; font-weight:bold;">Đăng Nhập Để Tiếp Tục</h3>
+            <div class="card-body">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">Tài Khoản</i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Tài khoản đăng nhập hoặc Email" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">Mật Khẩu</i>
+                  </span>
+                </div>
+                <input type="password" class="form-control" placeholder="Mật khẩu của bạn" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+              </div>
+              
+            </div>
+            
+            <div class="footer text-center">
+                <button class="btn btn-primary btn-sm " (click)="doLogin()">Đăng nhập<div class="ripple-container"></div></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
